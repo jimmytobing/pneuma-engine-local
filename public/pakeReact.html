@@ -35,16 +35,14 @@
       src="https://unpkg.com/babel-standalone@6/babel.min.js"
       crossorigin
     ></script>
-  </head>
-  <body class="bg-gray-200">
     <link
       rel="stylesheet"
       href="https://pro.fontawesome.com/releases/v5.15.4/css/all.css"
       crossorigin="anonymous"
     />
-
+  </head>
+  <body class="bg-gray-200">
     <!--Tengah-->
-    <h2>Test</h2>
     <div id="tengah"></div>
 
     <script type="text/babel">
@@ -79,7 +77,18 @@
         } else if (!isLoaded) {
           return <div>Loading...</div>;
         } else {
-          return <pre>{JSON.stringify(items, null, '   ')}</pre>;
+          return (
+            <div>
+              <ul>
+                {items.rows.map((item) => (
+                  <li key={item._id}>
+                    {item.name} --> {item.price}
+                  </li>
+                ))}
+              </ul>
+              <pre>{JSON.stringify(items, null, '   ')}</pre>;
+            </div>
+          );
         }
       }
 
