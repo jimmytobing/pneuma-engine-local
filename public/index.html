@@ -518,6 +518,7 @@
 				return {
 					menu: [
 						{ id: "home", caption: "Home" },
+						{ id: "itemku", caption: "Items service" },
 						{ id: "greeter", caption: "Greeter service" },
 						{ id: "products", caption: "Products service" },
 						{ id: "nodes", caption: "Nodes" },
@@ -526,6 +527,17 @@
 					page: "home",
 
 					requests: {
+						itemku : [
+							{
+								id: "coba", action: "items.hello", rest:"/api/items",
+								fields: [
+									{ 
+										field: "namaku", label: "ini namaku", type: "text", paramType: "param"
+									}
+								],
+								response: null, status:null
+							}
+						],
 						greeter: [
 							{ id: "hello", action: "greeter.hello", rest: "/api/greeter/hello", response: null, status: null, duration: null },
 

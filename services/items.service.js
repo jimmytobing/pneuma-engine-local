@@ -11,4 +11,18 @@ module.exports = {
       price: 'number|positive',
     },
   },
+  actions: {
+    hello: {
+      rest: {
+        method: 'GET',
+        path: '/',
+      },
+      params: {
+        name: 'string',
+      },
+      async handler(ctx) {
+        return 'Hello ' + ctx.params.namaku;
+      },
+    },
+  },
 };
