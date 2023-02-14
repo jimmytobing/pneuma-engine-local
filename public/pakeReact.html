@@ -46,7 +46,71 @@
     <div id="tengah"></div>
 
     <script type="text/babel">
-      function MyComponent() {
+      function ListApi() {
+        const [error, setError] = React.useState(null);
+        const [isLoaded, setIsLoaded] = React.useState(false);
+        const [items, setItems] = React.useState([]);
+
+        // Note: the empty deps array [] means
+        // this useEffect will run once
+        // similar to componentDidMount()
+        React.useEffect(() => {
+          fetch('/api/~node/services?withActions=true')
+            .then((res) => res.json())
+            .then(
+              (result) => {
+                setIsLoaded(true);
+                setItems(result);
+              },
+              // Note: it's important to handle errors here
+              // instead of a catch() block so that we don't swallow
+              // exceptions from actual bugs in components.
+              (error) => {
+                setIsLoaded(true);
+                setError(error);
+              }
+            );
+        }, []);
+
+        if (error) {
+          return <div>Error: {error.message}</div>;
+        } else if (!isLoaded) {
+          return <div>Loading...</div>;
+        } else {
+          return (
+            <div>
+              {items.map((item) => (
+                <div
+                  key={item.name}
+                  className="shadow-lg rounded-lg w-screen h-full bg-blue-50 p-5 mb-5"
+                >
+                  <h1>{item.fullName}</h1>
+                  {Object.keys(item.actions).forEach(function (key) {
+                    console.log(key, item.actions[key]);
+                  })}
+                  <br />
+                </div>
+              ))}
+              <pre>{JSON.stringify(items, null, '   ')}</pre>;
+            </div>
+          );
+        }
+      }
+
+      /*
+                  {Object.keys(item.actions).forEach(function (key) {
+                    <div className="border-2 bg-red-50">
+                      {key}|{item.actions[key]}
+                    </div>;
+                  })}
+                  <h2>Parameter : </h2>
+                  <input type="text" placeholder="test" />
+                  <br />
+                  <button className="border-2 bg-red-200">Send</button>
+      */
+
+      /*
+      function ApiForm(props) {
         const [error, setError] = React.useState(null);
         const [isLoaded, setIsLoaded] = React.useState(false);
         const [items, setItems] = React.useState([]);
@@ -94,7 +158,7 @@
         }
       }
 
-      /*
+
             <ul>
               {items.map((item) => (
                 <li key={item.id}>
@@ -104,7 +168,7 @@
             </ul>
       */
       const root = ReactDOM.createRoot(document.getElementById('tengah'));
-      root.render(<MyComponent />);
+      root.render(<ListApi />);
     </script>
 
     <style>
