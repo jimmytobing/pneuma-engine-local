@@ -46,6 +46,30 @@
     <div id="tengah"></div>
 
     <script type="text/babel">
+      function LogJson(props){
+        return(
+          <div>
+            <pre>{JSON.stringify(props.log, null, '   ')}</pre>
+          </div>
+        )
+      }
+
+      function ListAksi(props){
+        var arr = [];
+        Object.keys(props.aksi).forEach(function(key) {
+          arr.push(props.aksi[key]);
+        });
+        return(
+          <ul>
+            {arr.map(item => <li key={item.name}> 
+              {item.name} <br/>
+              REST = <LogJson log ={item.rest}/>
+              PARAMS = <LogJson log ={item.params}/>
+              </li>)}
+          </ul>
+        )
+      }
+
       function ListApi() {
         const [error, setError] = React.useState(null);
         const [isLoaded, setIsLoaded] = React.useState(false);
@@ -79,19 +103,16 @@
         } else {
           return (
             <div>
-              {items.map((item) => (
+              {items.map((item) => (item.name=="$node" || item.name =="api") ? null : (
                 <div
                   key={item.name}
                   className="shadow-lg rounded-lg w-screen h-full bg-blue-50 p-5 mb-5"
                 >
-                  <h1>{item.fullName}</h1>
-                  {Object.keys(item.actions).forEach(function (key) {
-                    console.log(key, item.actions[key]);
-                  })}
+                  <h1>{item.name}</h1>
+                  <ListAksi aksi={item.actions} />
                   <br />
                 </div>
               ))}
-              <pre>{JSON.stringify(items, null, '   ')}</pre>;
             </div>
           );
         }
